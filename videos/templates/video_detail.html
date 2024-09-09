@@ -1,0 +1,23 @@
+<h1>{{ video.file.name }}</h1>
+<video id="videoPlayer" width="640" height="360" controls>
+    <source src="{{ video.file.url }}" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+<h2>Subtitles</h2>
+<ul>
+    {% for subtitle in subtitles %}
+    <li>
+        {{ subtitle.content }} (Start time: {{ subtitle.start_time }} seconds)
+        <a href="#" onclick="playAtTime({{ subtitle.start_time }})">Play from here</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<script>
+function playAtTime(startTime) {
+    const video = document.getElementById('videoPlayer');
+    video.currentTime = startTime;
+    video.play();
+}
+</script>
