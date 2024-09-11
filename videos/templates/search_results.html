@@ -1,18 +1,35 @@
-<h1>Search Results for "{{ query }}"</h1>
-<ul>
-    {% for result in results %}
-    <li>
-        <a href="{% url 'video_detail' result.video.id %}">{{ result.video.file.name }}</a>:
-        {{ result.content }} (Start time: {{ result.start_time }} seconds)
-        <a href="#" onclick="playAtTime({{ result.start_time }})">Play from here</a>
-    </li>
-    {% endfor %}
-</ul>
+{% extends "base.html" %}
 
-<script>
-function playAtTime(startTime) {
-    const video = document.querySelector('video');
-    video.currentTime = startTime;
-    video.play();
-}
-</script>
+{% load static %}
+
+{% block content %}
+
+
+    <h1>Search Results for "{{ query }}"</h1>
+    <ul>
+        {% for result in results %}
+        <li>
+            <a href="{% url 'video_detail' result.video.id %}">{{ result.video.file.name }}</a>:
+            {{ result.content }} (Start time: {{ result.start_time }} seconds)
+            <a href="#" onclick="playAtTime({{ result.start_time }})">Play from here</a>
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endblock  %}
+
+
+
+{% block script %}
+
+    <script>
+        function playAtTime(startTime) {
+            const video = document.querySelector('video');
+            video.currentTime = startTime;
+            video.play();
+        }
+    </script>
+
+{% endblock %}
+
+
