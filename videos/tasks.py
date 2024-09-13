@@ -12,13 +12,17 @@ def extract_subtitles(video_path, video_obj_id):
     os.makedirs(output_path, exist_ok=True)
     subtitle_file = os.path.join(output_path, f'{video_obj.id}.srt')
     
-    # Run ccextractor
-    command = ['ccextractor', video_path, '-o', subtitle_file]
+    # Run FFmpeg to extract subtitles
+    command = [
+        'ffmpeg',
+        '-i', video_path,      # Input video file       # Map the first subtitle stream (adjust this if needed)
+        subtitle_file          # Output subtitle file (.srt format)
+    ]
     print(f"Running command: {' '.join(command)}")
     result = subprocess.run(command, capture_output=True, text=True)
     
     if result.returncode != 0:
-        print(f"CCExtractor Error: {result.stderr}")
+        print(f"FFmpeg Error: {result.stderr}")
         return
     
     if not os.path.exists(subtitle_file):
@@ -33,10 +37,15 @@ def extract_subtitles(video_path, video_obj_id):
         return
     
     for sub in subs:
-        start_time_seconds = sub.start.hours * 3600 + sub.start.minutes * 60 + sub.start.seconds + sub.start.milliseconds / 1000
+        start_time_seconds = (
+            sub.start.hours * 3600 +
+            sub.start.minutes * 60 +
+            sub.start.seconds +
+            sub.start.milliseconds / 1000
+        )
         Subtitle.objects.create(
             video=video_obj,
-            language='English',
+            language='English',  # Change this if you want to support other languages
             content=sub.text,
             start_time=start_time_seconds
         )

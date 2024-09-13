@@ -1,64 +1,22 @@
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="{% url 'home' %}">WishBox</a>
+        <a class="navbar-brand" href="{% url 'video_list' %}">Home</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'category_summary' %}">Category</a>
-                </li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'upload_video' %}">Upload</a></li>
             </ul>
 
-            <form class="d-flex" method="POST" action="{% url 'search' %}" role="search">
+            <form class="d-flex" method="POST" action="{% url 'search_subtitles' %}" role="search">
                 {% csrf_token %}
-                <input class="form-control me-2" type="search" name="searched" placeholder="Search" aria-label="Search" required pattern="[a-zA-Z0-9\s]+" title="Enter your search query">
+                <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search" required pattern="[a-zA-Z0-9\s]+" title="Enter your search query">
                 <button class="btn btn-warning" type="submit">Search</button>
             </form>
             
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-            <form class="d-flex">
-                <a href="{% url 'cart_summary' %}" class="btn btn-outline-dark"><i class="bi-cart-fill me-1"></i>
-                    Cart
-                    <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart_quantity">
-                        {{ cart|length }}
-                    </span></a>
-            </form>
-
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            {% if user.is_authenticated %}
-                {% if user.is_superuser %}
-                    <span class="navbar-text badge bg-light text-white rounded-pill">
-                        <a class="nav-link btn btn-outline-warning" href="{% url 'admin_dashboard' %}">Dashboard</a>
-                    </span>
-                    &nbsp;&nbsp;
-                    <span class="navbar-text">
-                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                    </span>
-                    &nbsp;&nbsp;
-                    <span class="navbar-text">
-                        <a class="nav-link" href="{% url 'update_user' %}">Profile</a>
-                    </span>
-                {% else %}
-                    <span class="navbar-text">
-                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                    </span>
-                    &nbsp;&nbsp;
-                    <span class="navbar-text">
-                        <a class="nav-link" href="{% url 'update_user' %}">Profile</a>
-                    </span>
-                {% endif %}
-            {% else %}
-                <span class="navbar-text">
-                    <a class="nav-link" href="{% url 'login' %}">Login</a>
-                </span>
-            {% endif %}
-        
         
 
         </div>

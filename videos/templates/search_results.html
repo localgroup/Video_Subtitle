@@ -5,16 +5,22 @@
 {% block content %}
 
 
-    <h1>Search Results for "{{ query }}"</h1>
-    <ul>
+    <div class="container">
+        <h1 class="display-4">Search Results for "{{ query }}"</h1>
+        <ul class="list-group">
         {% for result in results %}
-        <li>
-            <a href="{% url 'video_detail' result.video.id %}">{{ result.video.file.name }}</a>:
-            {{ result.content }} (Start time: {{ result.start_time }} seconds)
-            <a href="#" onclick="playAtTime({{ result.start_time }})">Play from here</a>
-        </li>
+            <li class="list-group-item">
+            <a href="{% url 'video_detail' result.video.id %}" class="text-decoration-none">
+                {{ result.video.file.name }}
+            </a>
+            <span class="text-muted">: {{ result.content }} (Start time: {{ result.start_time }} seconds)</span>
+            <a href="#" class="btn btn-sm btn-primary" onclick="playAtTime({{ result.start_time }})">Play from here</a>
+            </li>
         {% endfor %}
-    </ul>
+        </ul>
+    </div>
+
+    <br><br><br><br><br><br><br><br><br>
 
 {% endblock  %}
 
