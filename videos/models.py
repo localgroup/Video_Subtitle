@@ -1,4 +1,5 @@
 from django.db import models
+import os
 
 
 # Create your models here.
@@ -9,6 +10,9 @@ class Video(models.Model):
 
     def __str__(self):
         return self.file.name
+    
+    def get_file_name(self):
+        return os.path.basename(self.file.name)
     
 
 class Subtitle(models.Model):

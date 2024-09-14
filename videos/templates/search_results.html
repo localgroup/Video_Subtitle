@@ -14,28 +14,12 @@
                 {{ result.video.file.name }}
             </a>
             <span class="text-muted">: {{ result.content }} (Start time: {{ result.start_time }} seconds)</span>
-            <a href="#" class="btn btn-sm btn-primary" onclick="playAtTime({{ result.start_time }})">Play from here</a>
             </li>
         {% endfor %}
         </ul>
     </div>
-
-    <br><br><br><br><br><br><br><br><br>
+    <br><br><br>
 
 {% endblock  %}
-
-
-
-{% block script %}
-
-    <script>
-        function playAtTime(startTime) {
-            const video = document.querySelector('video');
-            video.currentTime = startTime;
-            video.play();
-        }
-    </script>
-
-{% endblock %}
 
 

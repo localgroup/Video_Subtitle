@@ -12,12 +12,11 @@
         <ul class="list-group">
             {% for video in videos %}
             <li class="list-group-item">
-                <a href="{% url 'video_detail' video.id %}" class="text-decoration-none">{{ video.file.name }}</a>
+                <a href="{% url 'video_detail' video.id %}" class="text-decoration-none">{{ video.get_file_name }}</a>
             </li>
             {% endfor %}
         </ul>
     </div>
-
-    <br><br><br><br><br><br>
+    <br><br><br>
 
 {% endblock  %}

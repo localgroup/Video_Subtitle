@@ -9,7 +9,7 @@ import os
 # Create your views here.
 
 def search_subtitles(request):
-    query = request.GET.get('q', '')
+    query = request.POST.get('q', '')
     results = Subtitle.objects.filter(content__icontains=query)
     return render(request, 'search_results.html', {'results': results, 'query': query})
 

@@ -15,7 +15,7 @@ def extract_subtitles(video_path, video_obj_id):
     # Run FFmpeg to extract subtitles
     command = [
         'ffmpeg',
-        '-i', video_path,      # Input video file       # Map the first subtitle stream (adjust this if needed)
+        '-i', video_path,      # Input video file
         subtitle_file          # Output subtitle file (.srt format)
     ]
     print(f"Running command: {' '.join(command)}")
@@ -45,7 +45,7 @@ def extract_subtitles(video_path, video_obj_id):
         )
         Subtitle.objects.create(
             video=video_obj,
-            language='English',  # Change this if you want to support other languages
+            language='English',
             content=sub.text,
             start_time=start_time_seconds
         )
