@@ -1,8 +1,7 @@
 from django.db import models
 import os
+from django.utils import timezone
 
-
-# Create your models here.
 
 class Video(models.Model):
     file = models.FileField(upload_to='videos/')
@@ -20,7 +19,8 @@ class Subtitle(models.Model):
     language = models.CharField(max_length=50)
     content = models.TextField()
     start_time = models.FloatField()  # Store start time of the subtitle in seconds
+    end_time = models.FloatField()  # Add end_time field
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f'{self.language} subtitles for {self.video}'
-

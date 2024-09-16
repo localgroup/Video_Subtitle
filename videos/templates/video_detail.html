@@ -1,49 +1,81 @@
 {% extends "base.html" %}
-
 {% load static %}
 
 {% block content %}
-
-
-    <div class="container">
-        <br><br>
-        <div class="card">
-            <h3 class="card-title">{{ video.get_file_name }}</h3>
+    <div class="container-fluid p-4"> 
+        <h2 class="display-4">{{ video.get_file_name }}</h2>
+        
+        <div class="row"> 
+            <div class="col-md-6"> 
+                <div class="video-container mb-6"> 
+                    <video id="video-player" controls class="w-100"> 
+                        <source src="{{ video.file.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+            <div class="col-md-6"> 
+                <div class="card p-4 mt-4"> 
+                    <h3 class="mb-3">Subtitles</h3> 
+                    {% for subtitle in subtitles %}
+                        <div class="subtitle-item mb-3"> 
+                            <p class="lead">{{ subtitle.content }}</p> 
+                            <p>Start time: {{ subtitle.start_time }} seconds</p>
+                            <button onclick="playAtTime({{ subtitle.start_time }})" class="btn btn-secondary btn-sm">Play from here</button> <!-- added Bootstrap button class -->
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
-        <br><br><br>
-        <div class="embed-responsive embed-responsive-16by9">
-            <video id="videoPlayer" class="embed-responsive-item" width="640" height="360" controls>
-                <source src="{{ video.file.url }}" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-        <br><hr>
-        <h2 class="mt-4">Subtitles</h2>
-        <ul class="list-group">
-            {% for subtitle in subtitles %}
-            <li class="list-group-item">
-                {{ subtitle.content }} (Start time: {{ subtitle.start_time }} seconds)
-                <a href="#" class="btn btn-sm btn-primary" onclick="playAtTime({{ subtitle.start_time }})">Play from here</a>
-            </li>
-            {% endfor %}
-        </ul>
+
+        
     </div>
-    <br><br><br>
+    <br><br><br><br><br>
 
-{% endblock  %}
+{% endblock %}
 
 
 
 {% block script %}
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var video = document.querySelector('video');
+            var startTime = {{ start_time|default:0 }};
+            if (video && startTime > 0) {
+                video.currentTime = startTime;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var video = document.getElementById('video-player');
+            var subtitles = {{ subtitles_json|safe }};
+            var languages = {{ languages_json|safe }};
+
+            // Remove any existing text tracks
+            while(video.textTracks.length > 0) {
+                video.removeChild(video.textTracks[0]);
+            }
+
+            languages.forEach(function(lang) {
+                var track = video.addTextTrack("captions", lang, lang);
+                track.mode = "showing";
+
+                if (subtitles[lang]) {
+                    subtitles[lang].forEach(function(subtitle) {
+                        var cue = new VTTCue(subtitle.start_time, subtitle.end_time, subtitle.content);
+                        track.addCue(cue);
+                    });
+                }
+            });
+
+            console.log("Subtitles loaded:", Object.keys(subtitles).length);
+        });
+
         function playAtTime(startTime) {
-            const video = document.getElementById('videoPlayer');
+            var video = document.getElementById('video-player');
             video.currentTime = startTime;
             video.play();
         }
     </script>
-    
-
 {% endblock %}
-
