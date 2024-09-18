@@ -38,7 +38,7 @@ def video_detail(request, video_id):
     search_query = request.GET.get('search', '')
     start_time = request.GET.get('start_time', 0)
     
-    # Only get subtitles for this specific video
+    # Only get subtitles for the specific video
     subtitles = video.subtitles.all()
     if search_query:
         subtitles = subtitles.filter(Q(content__icontains=search_query))
@@ -66,6 +66,13 @@ def video_detail(request, video_id):
     }
     
     return render(request, 'video_detail.html', context)
+
+
+def format_time(seconds):
+    hours = int(seconds // 3600)
+    minutes = int((seconds % 3600) // 60)
+    seconds = seconds % 60
+    return f"{hours:02d}:{minutes:02d}:{seconds:06.3f}"
     
     
 def subtitle_file(request, video_id, language):
@@ -83,8 +90,3 @@ def subtitle_file(request, video_id, language):
     return response
 
 
-def format_time(seconds):
-    hours = int(seconds // 3600)
-    minutes = int((seconds % 3600) // 60)
-    seconds = seconds % 60
-    return f"{hours:02d}:{minutes:02d}:{seconds:06.3f}"

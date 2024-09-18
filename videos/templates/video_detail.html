@@ -21,7 +21,7 @@
                         <div class="subtitle-item mb-3"> 
                             <p class="lead">{{ subtitle.content }}</p> 
                             <p>Start time: {{ subtitle.start_time }} seconds</p>
-                            <button onclick="playAtTime({{ subtitle.start_time }})" class="btn btn-secondary btn-sm">Play from here</button> <!-- added Bootstrap button class -->
+                            <button onclick="playAtTime({{ subtitle.start_time }})" class="btn btn-success btn-sm">Play from here</button>
                         </div>
                     {% endfor %}
                 </div>
@@ -39,43 +39,45 @@
 {% block script %}
 
     <script>
+
         document.addEventListener('DOMContentLoaded', function() {
-            var video = document.querySelector('video');
-            var startTime = {{ start_time|default:0 }};
+            const video = document.querySelector('video');
+            const startTime = {{ start_time|default:0 }};
             if (video && startTime > 0) {
                 video.currentTime = startTime;
             }
         });
-
+        
         document.addEventListener('DOMContentLoaded', function() {
-            var video = document.getElementById('video-player');
-            var subtitles = {{ subtitles_json|safe }};
-            var languages = {{ languages_json|safe }};
-
+            const video = document.getElementById('video-player');
+            const subtitles = {{ subtitles_json|safe }};
+            const languages = {{ languages_json|safe }};
+        
             // Remove any existing text tracks
             while(video.textTracks.length > 0) {
                 video.removeChild(video.textTracks[0]);
             }
-
+        
             languages.forEach(function(lang) {
-                var track = video.addTextTrack("captions", lang, lang);
+                const track = video.addTextTrack("captions", lang, lang);
                 track.mode = "showing";
-
+        
                 if (subtitles[lang]) {
                     subtitles[lang].forEach(function(subtitle) {
-                        var cue = new VTTCue(subtitle.start_time, subtitle.end_time, subtitle.content);
+                        const cue = new VTTCue(subtitle.start_time, subtitle.end_time, subtitle.content);
                         track.addCue(cue);
                     });
                 }
             });
-
+        
             console.log("Subtitles loaded:", Object.keys(subtitles).length);
         });
-
+        
         function playAtTime(startTime) {
-            var video = document.getElementById('video-player');
+            const video = document.getElementById('video-player');
             video.currentTime = startTime;
             video.play();
         }
+        
     </script>
 {% endblock %}

@@ -60,7 +60,7 @@ def extract_subtitles(video_path, video_obj_id):
         )
         Subtitle.objects.create(
             video=video_obj,
-            language='English',  # Assuming English for now
+            language='English',
             content=sub.text,
             start_time=start_time_seconds,
             end_time=end_time_seconds

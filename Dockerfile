@@ -76,7 +76,6 @@ RUN python manage.py collectstatic --noinput
 # Expose the port the app runs on
 EXPOSE 8000
 
-# # Command to run the application using Gunicorn
 # CMD ["gunicorn", "--bind", "0.0.0.0:8000", "process_video.wsgi:application"]
 
 

@@ -18,8 +18,8 @@ class Subtitle(models.Model):
     video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='subtitles')
     language = models.CharField(max_length=50)
     content = models.TextField()
-    start_time = models.FloatField()  # Store start time of the subtitle in seconds
-    end_time = models.FloatField()  # Add end_time field
+    start_time = models.FloatField()  # Store start time of the subtitle in seconds.
+    end_time = models.FloatField()  # End time of the video in seconds.
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
